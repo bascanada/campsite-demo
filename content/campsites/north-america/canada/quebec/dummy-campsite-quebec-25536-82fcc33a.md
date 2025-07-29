@@ -1,0 +1,27 @@
+---
+id: "82fcc33a-8e81-4ec9-a9e9-d7a832c31383"
+name: "Dummy Campsite Quebec 25536"
+latitude: 57.642631
+longitude: -76.958476
+continent: "north-america"
+country: "canada"
+region: "quebec"
+amenities:
+  - "ATV-access"
+  - "fishing"
+images:
+  - "https://res.cloudinary.com/demo/image/upload/v1/sample.jpg"
+reviews:
+  - author: "Dummy Reviewer A"
+    date: "2025-08-08"
+    rating: 4
+    comment: "A nice, quiet dummy spot with some basic amenities."
+  - author: "Dummy Reviewer B"
+    date: "2025-06-024"
+    rating: 4
+    comment: "Found it easily. GPS was spot on for this dummy location."
+---
+
+This is a **dummy description** for Dummy Campsite Quebec 25536, generated for the proof of concept.
+
+It provides a serene environment, perfect for demonstrating how SvelteKit can handle a large number of static pages. The coordinates are 57.642631, -76.958476.

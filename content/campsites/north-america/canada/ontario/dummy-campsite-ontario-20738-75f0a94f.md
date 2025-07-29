@@ -1,0 +1,27 @@
+---
+id: "75f0a94f-38c2-4457-85fb-dcd5cbe8d721"
+name: "Dummy Campsite Ontario 20738"
+latitude: 52.999973
+longitude: -83.175609
+continent: "north-america"
+country: "canada"
+region: "ontario"
+amenities:
+  - "tent-only"
+  - "hiking"
+images:
+  - "https://res.cloudinary.com/demo/image/upload/v1/sample.jpg"
+reviews:
+  - author: "Dummy Reviewer A"
+    date: "2025-03-021"
+    rating: 4
+    comment: "A nice, quiet dummy spot with some basic amenities."
+  - author: "Dummy Reviewer B"
+    date: "2025-03-018"
+    rating: 2
+    comment: "Found it easily. GPS was spot on for this dummy location."
+---
+
+This is a **dummy description** for Dummy Campsite Ontario 20738, generated for the proof of concept.
+
+It provides a serene environment, perfect for demonstrating how SvelteKit can handle a large number of static pages. The coordinates are 52.999973, -83.175609.

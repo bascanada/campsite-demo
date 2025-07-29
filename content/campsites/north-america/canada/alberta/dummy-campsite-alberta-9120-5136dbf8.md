@@ -1,0 +1,27 @@
+---
+id: "5136dbf8-4990-4373-bbe6-b865c6473ffb"
+name: "Dummy Campsite Alberta 9120"
+latitude: 50.045217
+longitude: -119.771991
+continent: "north-america"
+country: "canada"
+region: "alberta"
+amenities:
+  - "toilet"
+  - "picnic-table"
+images:
+  - "https://res.cloudinary.com/demo/image/upload/v1/sample.jpg"
+reviews:
+  - author: "Dummy Reviewer A"
+    date: "2025-07-018"
+    rating: 5
+    comment: "A nice, quiet dummy spot with some basic amenities."
+  - author: "Dummy Reviewer B"
+    date: "2025-08-020"
+    rating: 4
+    comment: "Found it easily. GPS was spot on for this dummy location."
+---
+
+This is a **dummy description** for Dummy Campsite Alberta 9120, generated for the proof of concept.
+
+It provides a serene environment, perfect for demonstrating how SvelteKit can handle a large number of static pages. The coordinates are 50.045217, -119.771991.

@@ -1,0 +1,13 @@
+/* Global styles for the app */
+body {
+	margin: 0;
+	font-family: sans-serif;
+	overflow-x: hidden; /* Prevent horizontal scroll for wide elements */
+}
+.leaflet-container {
+	/* Basic styling for Leaflet map */
+	z-index: 0; /* Ensure map is behind popups */
+}
+@import 'tailwindcss';
+@plugin '@tailwindcss/forms';
+@plugin '@tailwindcss/typography';

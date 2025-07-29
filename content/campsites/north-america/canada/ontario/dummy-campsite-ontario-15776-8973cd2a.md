@@ -1,0 +1,27 @@
+---
+id: "8973cd2a-66e4-42cf-94f2-c27b227aeb57"
+name: "Dummy Campsite Ontario 15776"
+latitude: 51.818381
+longitude: -88.018418
+continent: "north-america"
+country: "canada"
+region: "ontario"
+amenities:
+  - "RV-suitable"
+  - "trash"
+images:
+  - "https://res.cloudinary.com/demo/image/upload/v1/sample.jpg"
+reviews:
+  - author: "Dummy Reviewer A"
+    date: "2025-02-04"
+    rating: 5
+    comment: "A nice, quiet dummy spot with some basic amenities."
+  - author: "Dummy Reviewer B"
+    date: "2025-09-02"
+    rating: 4
+    comment: "Found it easily. GPS was spot on for this dummy location."
+---
+
+This is a **dummy description** for Dummy Campsite Ontario 15776, generated for the proof of concept.
+
+It provides a serene environment, perfect for demonstrating how SvelteKit can handle a large number of static pages. The coordinates are 51.818381, -88.018418.

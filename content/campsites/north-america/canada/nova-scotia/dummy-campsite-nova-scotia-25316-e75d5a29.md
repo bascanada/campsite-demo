@@ -1,0 +1,27 @@
+---
+id: "e75d5a29-ab61-41f3-9f33-8b492c7e6e1f"
+name: "Dummy Campsite Nova Scotia 25316"
+latitude: 43.576269
+longitude: -62.207915
+continent: "north-america"
+country: "canada"
+region: "nova-scotia"
+amenities:
+  - "ATV-access"
+  - "trash"
+images:
+  - "https://res.cloudinary.com/demo/image/upload/v1/sample.jpg"
+reviews:
+  - author: "Dummy Reviewer A"
+    date: "2025-03-09"
+    rating: 5
+    comment: "A nice, quiet dummy spot with some basic amenities."
+  - author: "Dummy Reviewer B"
+    date: "2025-02-08"
+    rating: 3
+    comment: "Found it easily. GPS was spot on for this dummy location."
+---
+
+This is a **dummy description** for Dummy Campsite Nova Scotia 25316, generated for the proof of concept.
+
+It provides a serene environment, perfect for demonstrating how SvelteKit can handle a large number of static pages. The coordinates are 43.576269, -62.207915.

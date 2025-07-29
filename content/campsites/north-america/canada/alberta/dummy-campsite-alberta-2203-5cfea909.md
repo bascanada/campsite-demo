@@ -1,0 +1,27 @@
+---
+id: "5cfea909-ec00-47b1-89a0-6b13811ca176"
+name: "Dummy Campsite Alberta 2203"
+latitude: 50.897142
+longitude: -113.019689
+continent: "north-america"
+country: "canada"
+region: "alberta"
+amenities:
+  - "hiking"
+  - "ATV-access"
+images:
+  - "https://res.cloudinary.com/demo/image/upload/v1/sample.jpg"
+reviews:
+  - author: "Dummy Reviewer A"
+    date: "2025-09-022"
+    rating: 3
+    comment: "A nice, quiet dummy spot with some basic amenities."
+  - author: "Dummy Reviewer B"
+    date: "2025-06-019"
+    rating: 3
+    comment: "Found it easily. GPS was spot on for this dummy location."
+---
+
+This is a **dummy description** for Dummy Campsite Alberta 2203, generated for the proof of concept.
+
+It provides a serene environment, perfect for demonstrating how SvelteKit can handle a large number of static pages. The coordinates are 50.897142, -113.019689.

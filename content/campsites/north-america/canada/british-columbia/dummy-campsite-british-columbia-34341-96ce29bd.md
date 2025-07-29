@@ -1,0 +1,29 @@
+---
+id: "96ce29bd-9934-4367-874a-303517d32f79"
+name: "Dummy Campsite British Columbia 34341"
+latitude: 56.571188
+longitude: -124.709651
+continent: "north-america"
+country: "canada"
+region: "british-columbia"
+amenities:
+  - "trash"
+  - "cell-service"
+  - "fire-pit"
+  - "tent-only"
+images:
+  - "https://res.cloudinary.com/demo/image/upload/v1/sample.jpg"
+reviews:
+  - author: "Dummy Reviewer A"
+    date: "2025-02-020"
+    rating: 5
+    comment: "A nice, quiet dummy spot with some basic amenities."
+  - author: "Dummy Reviewer B"
+    date: "2025-09-01"
+    rating: 4
+    comment: "Found it easily. GPS was spot on for this dummy location."
+---
+
+This is a **dummy description** for Dummy Campsite British Columbia 34341, generated for the proof of concept.
+
+It provides a serene environment, perfect for demonstrating how SvelteKit can handle a large number of static pages. The coordinates are 56.571188, -124.709651.

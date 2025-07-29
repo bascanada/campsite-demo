@@ -1,0 +1,29 @@
+---
+id: "a48e0a8d-554f-4b70-80b6-e9bae1c8c548"
+name: "Dummy Campsite Nova Scotia 1576"
+latitude: 44.037069
+longitude: -61.570622
+continent: "north-america"
+country: "canada"
+region: "nova-scotia"
+amenities:
+  - "trash"
+  - "dog-friendly"
+  - "tent-only"
+  - "ATV-access"
+images:
+  - "https://res.cloudinary.com/demo/image/upload/v1/sample.jpg"
+reviews:
+  - author: "Dummy Reviewer A"
+    date: "2025-08-08"
+    rating: 4
+    comment: "A nice, quiet dummy spot with some basic amenities."
+  - author: "Dummy Reviewer B"
+    date: "2025-02-01"
+    rating: 3
+    comment: "Found it easily. GPS was spot on for this dummy location."
+---
+
+This is a **dummy description** for Dummy Campsite Nova Scotia 1576, generated for the proof of concept.
+
+It provides a serene environment, perfect for demonstrating how SvelteKit can handle a large number of static pages. The coordinates are 44.037069, -61.570622.

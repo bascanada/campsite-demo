@@ -32,7 +32,7 @@ export const config = {
 export async function load({ params }): Promise<{ campsite: Campsite }> {
     const slugParam = params.slug;
     const fullSlug = Array.isArray(slugParam) ? slugParam.join('/') : slugParam || '';
-    const filePath = path.join(process.cwd(), 'content', 'campsites', `${fullSlug}.md`);
+    const filePath = path.join(process.cwd(), 'src', 'content', 'campsites', `${fullSlug}.md`);
 
     try {
         const fileContent = await readFile(filePath, 'utf-8');
@@ -70,7 +70,7 @@ export async function load({ params }): Promise<{ campsite: Campsite }> {
 export async function entries() {
     // Correct type declaration for 'paths'
     const paths: { slug: string }[] = []; // Changed to string, not string[]
-    const contentDir = path.join(process.cwd(), 'content', 'campsites');
+    const contentDir = path.join(process.cwd(), 'src', 'content', 'campsites');
 
     async function readDirRecursive(dir: string, currentPathSegments: string[] = []) {
         const entries = await readdir(dir, { withFileTypes: true });

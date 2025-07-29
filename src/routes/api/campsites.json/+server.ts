@@ -17,7 +17,7 @@ interface CampsiteSummary {
 
 export async function GET(): Promise<Response> {
     const campsites: CampsiteSummary[] = [];
-    const contentDir = path.join(process.cwd(), 'content', 'campsites');
+    const contentDir = path.join(process.cwd(), "src", "content", "campsites");
 
     async function readDirRecursive(dir: string) {
         const entries = await readdir(dir, { withFileTypes: true });

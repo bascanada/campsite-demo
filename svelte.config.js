@@ -3,37 +3,21 @@ import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 
 
 /** @type {import('@sveltejs/kit').Config} */
-import adapter from '@sveltejs/adapter-vercel';
-import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
-
-/** @type {import('@sveltejs/kit').Config} */
 const config = {
-    preprocess: vitePreprocess(),
+	// Consult https://kit.svelte.dev/docs/integrations#preprocessors
+	// for more information about preprocessors
+	preprocess: vitePreprocess(),
 
-    kit: {
-        adapter: adapter({
-            // Include content files for ISR
-            includeFiles: ['content/**/*']
-        }),
+	kit: {
+		// adapter-vercel is automatically detected by Vercel when deployed.
+		adapter: adapter(),
 
-        prerender: {
-            // Only prerender critical pages to avoid timeouts
-            entries: [
-                '/',
-                '/api/campsites.json'
-            ],
-            
-            // Handle missing pages gracefully (they'll be ISR'd)
-            handleMissingId: 'ignore',
-            handleHttpError: ({ path, referrer, message }) => {
-                // Don't fail build for missing campsite pages
-                if (path.startsWith('/campsites/')) {
-                    return;
-                }
-                throw new Error(message);
-            }
-        }
-    }
+		// ISR and prerendering for specific routes will be handled in +page.server.js files.
+		// Remove or comment out any global `prerender.entries` as ISR will manage regeneration.
+		prerender: {
+			// entries: ['*'] // Remove or comment out this line if present
+		}
+	}
 };
 
 export default config;

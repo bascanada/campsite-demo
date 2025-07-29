@@ -3,8 +3,5 @@
     "env": {
       "SVELTEKIT_ADAPTER_VERCEL": "1"
     }
-  },
-  "functions": {
-    "src/routes/campsites/**/*": { "includeFiles": "content/**" }
   }
 }

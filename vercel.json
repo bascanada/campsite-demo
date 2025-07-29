@@ -3,10 +3,5 @@
     "env": {
       "SVELTEKIT_ADAPTER_VERCEL": "1"
     }
-  },
-  "functions": {
-    ".svelte-kit/output/server/index.js": {
-      "includeFiles": "content/**"
-    }
   }
 }

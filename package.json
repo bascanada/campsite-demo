@@ -5,7 +5,7 @@
 	"type": "module",
 	"scripts": {
 		"dev": "vite dev",
-		"build": "vite build",
+		"build": "npm run copy-content && vite build",
 		"preview": "vite preview",
 		"prepare": "svelte-kit sync || echo ''",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
@@ -14,7 +14,8 @@
 		"lint": "prettier --check . && eslint .",
 		"test:unit": "vitest",
 		"test": "npm run test:unit -- --run",
-		"generate-data": "node scripts/generate-dummy-data.js"
+		"generate-data": "node scripts/generate-dummy-data.js",
+		"copy-content": "node -e \"require('fs').cpSync('content', '.svelte-kit/output/server/content', { recursive: true, force: true });\""
 	},
 	"devDependencies": {
 		"@eslint/compat": "^1.2.5",

@@ -4,10 +4,10 @@ import { error } from '@sveltejs/kit';
 export const prerender = true;
 
 export async function load({ params }) {
-    const { country } = params;
-    // Find all sub-division folders under static/content/campsites/north-america/{country}
-    const files = await glob(`static/content/campsites/north-america/${country}/*`);
+    const { continent, country } = params;
+    // Find all subdivision folders under static/content/campsites/{continent}/{country}
+    const files = await glob(`static/content/campsites/${continent}/${country}/*`);
     if (!files.length) error(404, 'Country not found');
     const subdivisions = files.map(f => f.split('/').pop()).filter(Boolean);
-    return { country, subdivisions };
+    return { continent, country, subdivisions };
 }

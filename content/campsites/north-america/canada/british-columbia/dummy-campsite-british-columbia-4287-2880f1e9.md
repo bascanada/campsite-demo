@@ -1,0 +1,27 @@
+---
+id: "2880f1e9-223d-4c36-8c07-e100b6742db0"
+name: "Dummy Campsite British Columbia 4287"
+latitude: 51.603623
+longitude: -126.840554
+continent: "north-america"
+country: "canada"
+region: "british-columbia"
+amenities:
+  - "picnic-table"
+  - "toilet"
+images:
+  - "https://res.cloudinary.com/demo/image/upload/v1/sample.jpg"
+reviews:
+  - author: "Dummy Reviewer A"
+    date: "2025-05-020"
+    rating: 3
+    comment: "A nice, quiet dummy spot with some basic amenities."
+  - author: "Dummy Reviewer B"
+    date: "2025-06-018"
+    rating: 2
+    comment: "Found it easily. GPS was spot on for this dummy location."
+---
+
+This is a **dummy description** for Dummy Campsite British Columbia 4287, generated for the proof of concept.
+
+It provides a serene environment, perfect for demonstrating how SvelteKit can handle a large number of static pages. The coordinates are 51.603623, -126.840554.

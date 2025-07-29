@@ -1,0 +1,28 @@
+---
+id: "9bcd87a2-c8f0-4b28-a5d1-7ddb50ea1979"
+name: "Dummy Campsite Quebec 43320"
+latitude: 50.201575
+longitude: -76.614974
+continent: "north-america"
+country: "canada"
+region: "quebec"
+amenities:
+  - "hiking"
+  - "dog-friendly"
+  - "trash"
+images:
+  - "https://res.cloudinary.com/demo/image/upload/v1/sample.jpg"
+reviews:
+  - author: "Dummy Reviewer A"
+    date: "2025-05-014"
+    rating: 3
+    comment: "A nice, quiet dummy spot with some basic amenities."
+  - author: "Dummy Reviewer B"
+    date: "2025-03-016"
+    rating: 4
+    comment: "Found it easily. GPS was spot on for this dummy location."
+---
+
+This is a **dummy description** for Dummy Campsite Quebec 43320, generated for the proof of concept.
+
+It provides a serene environment, perfect for demonstrating how SvelteKit can handle a large number of static pages. The coordinates are 50.201575, -76.614974.

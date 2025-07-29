@@ -1,0 +1,28 @@
+---
+id: "28f410db-4cfb-41ee-b5d3-647d506db4c8"
+name: "Dummy Campsite British Columbia 47209"
+latitude: 56.581775
+longitude: -126.265718
+continent: "north-america"
+country: "canada"
+region: "british-columbia"
+amenities:
+  - "tent-only"
+  - "ATV-access"
+  - "water"
+images:
+  - "https://res.cloudinary.com/demo/image/upload/v1/sample.jpg"
+reviews:
+  - author: "Dummy Reviewer A"
+    date: "2025-06-07"
+    rating: 3
+    comment: "A nice, quiet dummy spot with some basic amenities."
+  - author: "Dummy Reviewer B"
+    date: "2025-08-012"
+    rating: 2
+    comment: "Found it easily. GPS was spot on for this dummy location."
+---
+
+This is a **dummy description** for Dummy Campsite British Columbia 47209, generated for the proof of concept.
+
+It provides a serene environment, perfect for demonstrating how SvelteKit can handle a large number of static pages. The coordinates are 56.581775, -126.265718.

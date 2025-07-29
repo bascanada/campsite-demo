@@ -1,0 +1,29 @@
+---
+id: "f7ee9095-ed1e-4b33-ac3f-8f3ff40dd4de"
+name: "Dummy Campsite Quebec 130"
+latitude: 49.819315
+longitude: -64.095883
+continent: "north-america"
+country: "canada"
+region: "quebec"
+amenities:
+  - "RV-suitable"
+  - "ATV-access"
+  - "cell-service"
+  - "hiking"
+images:
+  - "https://res.cloudinary.com/demo/image/upload/v1/sample.jpg"
+reviews:
+  - author: "Dummy Reviewer A"
+    date: "2025-04-013"
+    rating: 4
+    comment: "A nice, quiet dummy spot with some basic amenities."
+  - author: "Dummy Reviewer B"
+    date: "2025-07-04"
+    rating: 3
+    comment: "Found it easily. GPS was spot on for this dummy location."
+---
+
+This is a **dummy description** for Dummy Campsite Quebec 130, generated for the proof of concept.
+
+It provides a serene environment, perfect for demonstrating how SvelteKit can handle a large number of static pages. The coordinates are 49.819315, -64.095883.

@@ -1,0 +1,29 @@
+---
+id: "04896069-3f50-4f58-a093-92e1318b7561"
+name: "Dummy Campsite British Columbia 19683"
+latitude: 57.876985
+longitude: -129.848681
+continent: "north-america"
+country: "canada"
+region: "british-columbia"
+amenities:
+  - "fishing"
+  - "fire-pit"
+  - "toilet"
+  - "tent-only"
+images:
+  - "https://res.cloudinary.com/demo/image/upload/v1/sample.jpg"
+reviews:
+  - author: "Dummy Reviewer A"
+    date: "2025-06-010"
+    rating: 3
+    comment: "A nice, quiet dummy spot with some basic amenities."
+  - author: "Dummy Reviewer B"
+    date: "2025-07-09"
+    rating: 2
+    comment: "Found it easily. GPS was spot on for this dummy location."
+---
+
+This is a **dummy description** for Dummy Campsite British Columbia 19683, generated for the proof of concept.
+
+It provides a serene environment, perfect for demonstrating how SvelteKit can handle a large number of static pages. The coordinates are 57.876985, -129.848681.

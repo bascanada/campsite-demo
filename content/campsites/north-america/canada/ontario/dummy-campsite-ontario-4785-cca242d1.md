@@ -1,0 +1,27 @@
+---
+id: "cca242d1-52f9-4db6-8e07-8497092a66d2"
+name: "Dummy Campsite Ontario 4785"
+latitude: 52.082746
+longitude: -88.180306
+continent: "north-america"
+country: "canada"
+region: "ontario"
+amenities:
+  - "cell-service"
+  - "hiking"
+images:
+  - "https://res.cloudinary.com/demo/image/upload/v1/sample.jpg"
+reviews:
+  - author: "Dummy Reviewer A"
+    date: "2025-06-011"
+    rating: 3
+    comment: "A nice, quiet dummy spot with some basic amenities."
+  - author: "Dummy Reviewer B"
+    date: "2025-04-026"
+    rating: 4
+    comment: "Found it easily. GPS was spot on for this dummy location."
+---
+
+This is a **dummy description** for Dummy Campsite Ontario 4785, generated for the proof of concept.
+
+It provides a serene environment, perfect for demonstrating how SvelteKit can handle a large number of static pages. The coordinates are 52.082746, -88.180306.

@@ -1,5 +1,5 @@
 // src/routes/campsites/[...slug]/+page.server.ts
-import { redirect } from '@sveltejs/kit';
+import { error, redirect } from '@sveltejs/kit';
 import matter from 'gray-matter';
 import { readFile, readdir } from 'node:fs/promises'; // Import readdir
 import path from 'node:path';
@@ -28,14 +28,17 @@ export const config = {
 };
 
 
+const modules = import.meta.glob('/content/campsites/**/*.md', { as: 'raw' });
+
 /** @type {import('./$types').PageServerLoad} */
 export async function load({ params }): Promise<{ campsite: Campsite }> {
-    const slugParam = params.slug;
-    const fullSlug = Array.isArray(slugParam) ? slugParam.join('/') : slugParam || '';
-    const filePath = path.join(process.cwd(), 'src', 'content', 'campsites', `${fullSlug}.md`);
+    const fullSlug = params.slug || '';
+    const modulePath = `/content/campsites/${fullSlug}.md`;
 
-    try {
-        const fileContent = await readFile(filePath, 'utf-8');
+    // 2. Check if the module exists in our map
+    if (modules[modulePath]) {
+        // 3. Since we used `{ as: 'raw' }`, this directly gives us the file's string content
+        const fileContent = await modules[modulePath]();
         const { data, content } = matter(fileContent);
 
         const urlPath = `/campsites/${fullSlug}`;
@@ -55,14 +58,13 @@ export async function load({ params }): Promise<{ campsite: Campsite }> {
             path: urlPath
         };
 
-        return {
-            campsite: campsiteData
-        };
-    } catch (error) {
-        console.error(`Could not find campsite data for path: ${filePath}`, error);
-        throw redirect(303, '/');
+        return { campsite: campsiteData };
     }
+
+    // If we get here, the file doesn't exist in the glob pattern.
+    throw error(404, 'Not found');
 }
+
 
 // --- CORRECTED CODE FOR PRERENDERING ---
 

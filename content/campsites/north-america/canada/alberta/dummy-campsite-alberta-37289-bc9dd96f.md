@@ -1,0 +1,29 @@
+---
+id: "bc9dd96f-c491-496f-acd7-2cde071374bc"
+name: "Dummy Campsite Alberta 37289"
+latitude: 54.127001
+longitude: -113.834321
+continent: "north-america"
+country: "canada"
+region: "alberta"
+amenities:
+  - "tent-only"
+  - "dog-friendly"
+  - "RV-suitable"
+  - "picnic-table"
+images:
+  - "https://res.cloudinary.com/demo/image/upload/v1/sample.jpg"
+reviews:
+  - author: "Dummy Reviewer A"
+    date: "2025-08-011"
+    rating: 4
+    comment: "A nice, quiet dummy spot with some basic amenities."
+  - author: "Dummy Reviewer B"
+    date: "2025-06-016"
+    rating: 2
+    comment: "Found it easily. GPS was spot on for this dummy location."
+---
+
+This is a **dummy description** for Dummy Campsite Alberta 37289, generated for the proof of concept.
+
+It provides a serene environment, perfect for demonstrating how SvelteKit can handle a large number of static pages. The coordinates are 54.127001, -113.834321.

@@ -1,0 +1,29 @@
+---
+id: "ea2cd9e2-21eb-4f2a-9a3e-83cc0f885d0b"
+name: "Dummy Campsite Quebec 14576"
+latitude: 48.804858
+longitude: -77.058732
+continent: "north-america"
+country: "canada"
+region: "quebec"
+amenities:
+  - "toilet"
+  - "dog-friendly"
+  - "tent-only"
+  - "picnic-table"
+images:
+  - "https://res.cloudinary.com/demo/image/upload/v1/sample.jpg"
+reviews:
+  - author: "Dummy Reviewer A"
+    date: "2025-08-07"
+    rating: 4
+    comment: "A nice, quiet dummy spot with some basic amenities."
+  - author: "Dummy Reviewer B"
+    date: "2025-05-012"
+    rating: 4
+    comment: "Found it easily. GPS was spot on for this dummy location."
+---
+
+This is a **dummy description** for Dummy Campsite Quebec 14576, generated for the proof of concept.
+
+It provides a serene environment, perfect for demonstrating how SvelteKit can handle a large number of static pages. The coordinates are 48.804858, -77.058732.

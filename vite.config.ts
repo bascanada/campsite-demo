@@ -1,9 +1,10 @@
 import tailwindcss from '@tailwindcss/vite';
 import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
+import { gridGenerator } from './src/lib/vite-grid-plugin.js';
 
 export default defineConfig({
-	plugins: [tailwindcss(), sveltekit()],
+	plugins: [gridGenerator(), tailwindcss(), sveltekit()],
 	test: {
 		projects: [
 			{

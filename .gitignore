@@ -1,5 +1,9 @@
 node_modules
 
+# Grid index data - generated during build
+static/api/grid/
+static/.grid-cache.json
+
 # Output
 .output
 .vercel

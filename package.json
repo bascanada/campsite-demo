@@ -6,6 +6,7 @@
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build",
+		"build:force": "rm -f static/.grid-cache.json && vite build",
 		"preview": "vite preview",
 		"prepare": "svelte-kit sync || echo ''",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
@@ -15,6 +16,8 @@
 		"test:unit": "vitest",
 		"test": "npm run test:unit -- --run",
 		"generate-data": "node scripts/generate-dummy-data.js",
+		"generate-grid-index": "node scripts/generate-grid-index.js",
+		"generate-grid-smart": "node scripts/smart-grid-generator.js",
 		"copy-content": "node -e \"require('fs').cpSync('content', '.svelte-kit/output/server/content', { recursive: true, force: true });\""
 	},
 	"devDependencies": {
@@ -26,6 +29,7 @@
 		"@tailwindcss/forms": "^0.5.9",
 		"@tailwindcss/typography": "^0.5.15",
 		"@tailwindcss/vite": "^4.0.0",
+		"@types/leaflet": "^1.9.20",
 		"@types/marked": "^5.0.2",
 		"@types/node": "^24.1.0",
 		"@vitest/browser": "^3.2.3",

@@ -108,7 +108,8 @@ class ViteGridGenerator {
             continent,
             country,
             subdivision,
-            slug: file.replace('src/content/', '').replace('.md', ''),
+            // Remove leading 'static/' and trailing '.md' for the slug
+            slug: file.replace(/^static\//, '').replace(/\.md$/, ''),
             // Add essential attributes only to reduce size
             type: attributes.type || 'campground',
             capacity: attributes.capacity

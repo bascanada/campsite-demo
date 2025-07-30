@@ -339,19 +339,19 @@
 		// Add individual campsite markers
 		campsitesToShow.forEach((campsite: any) => {
 			if (campsite.latitude && campsite.longitude) {
-				const marker = (window as any).L.marker([campsite.latitude, campsite.longitude]).addTo(map);
-				
-				marker.bindPopup(`
-					<b>${campsite.name}</b><br>
-					${campsite.amenities ? `<small>${campsite.amenities.slice(0, 3).join(', ')}</small><br>` : ''}
-					<a href="${campsite.path}">View Details</a>
-				`);
-				
-				marker.on('click', () => {
-					window.location.href = campsite.path;
-				});
-				
-				currentMarkers.push(marker);
+				   const marker = (window as any).L.marker([campsite.latitude, campsite.longitude]).addTo(map);
+				   let pagePath = campsite.path;
+				   if (!pagePath && campsite.slug) {
+					   // Remove 'content/' prefix for the page link
+					   pagePath = campsite.slug.replace(/^content\//, '');
+				   }
+				   marker.bindPopup(`
+					   <b>${campsite.name}</b><br>
+					   ${campsite.amenities ? `<small>${campsite.amenities.slice(0, 3).join(', ')}</small><br>` : ''}
+					   <a href="${pagePath ? pagePath : '#'}">View Details</a>
+				   `);
+				   // No auto-redirect on marker click; only the link in the popup navigates
+				   currentMarkers.push(marker);
 			}
 		});
 

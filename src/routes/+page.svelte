@@ -371,10 +371,10 @@
 		// Dynamically import Leaflet and CSS only on client
 		const L = (await import('leaflet')).default;
 		await import('leaflet/dist/leaflet.css');
-		
+
 		// Make L available globally for the functions above
 		(window as any).L = L;
-		
+
 		const iconRetinaUrl = (await import('leaflet/dist/images/marker-icon-2x.png')).default;
 		const iconUrl = (await import('leaflet/dist/images/marker-icon.png')).default;
 		const shadowUrl = (await import('leaflet/dist/images/marker-shadow.png')).default;
@@ -389,7 +389,23 @@
 			shadowSize: [41, 41]
 		});
 
-		map = L.map(mapElement).setView([54.0, -100.0], 4);
+		// Try to restore map state from localStorage
+		let initialCenter = [54.0, -100.0];
+		let initialZoom = 4;
+		if (typeof localStorage !== 'undefined') {
+			const saved = localStorage.getItem('mapState');
+			if (saved) {
+				try {
+					const { center, zoom } = JSON.parse(saved);
+					if (Array.isArray(center) && typeof zoom === 'number') {
+						initialCenter = center;
+						initialZoom = zoom;
+					}
+				} catch {}
+			}
+		}
+
+		map = L.map(mapElement).setView(initialCenter, initialZoom);
 		L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 			maxZoom: 19,
 			attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -400,6 +416,12 @@
 
 		// Set up event listeners for map changes
 		map.on('moveend zoomend', () => {
+			// Save map state to localStorage
+			if (typeof localStorage !== 'undefined') {
+				const center = map.getCenter();
+				const zoom = map.getZoom();
+				localStorage.setItem('mapState', JSON.stringify({ center: [center.lat, center.lng], zoom }));
+			}
 			debouncedUpdate();
 		});
 	});

@@ -1,7 +1,7 @@
 node_modules
 
-# Grid index data - generated during build
 static/api/grid/
+static/api/campsites-minimal.json
 static/.grid-cache.json
 
 # Output

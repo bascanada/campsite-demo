@@ -65,7 +65,7 @@ class ViteGridGenerator {
   }
 
   async calculateContentHash() {
-    const contentFiles = await glob('src/content/campsites/**/*.md');
+    const contentFiles = await glob('static/content/campsites/**/*.md');
     const fileStats = await Promise.all(
       contentFiles.map(async (file) => {
         const stat = await fs.stat(file);
@@ -83,7 +83,8 @@ class ViteGridGenerator {
 
   async loadCampsites() {
     console.log('📁 Loading campsites...');
-    const files = await glob('src/content/campsites/**/*.md');
+    const files = await glob('static/content/campsites/**/*.md');
+    console.log(`Found ${files.length} files in static/content/campsites/`);
     
     this.campsites = [];
     
@@ -169,42 +170,123 @@ class ViteGridGenerator {
     }
     
     return {
-      south: (gridY * gridSize) - 90,
-      north: ((gridY + 1) * gridSize) - 90,
-      west: (gridX * gridSize) - 180,
-      east: ((gridX + 1) * gridSize) - 180
+      minLat: (gridY * gridSize) - 90,
+      maxLat: ((gridY + 1) * gridSize) - 90,
+      minLng: (gridX * gridSize) - 180,
+      maxLng: ((gridX + 1) * gridSize) - 180
     };
   }
 
   async saveGridIndexes() {
     console.log('💾 Saving grid indexes...');
     
+    // Ensure directories exist
+    await fs.mkdir('static/api/grid/meta', { recursive: true });
+    
     let totalFiles = 0;
+    let stats = {
+      totalCampsites: this.campsites.length,
+      countryCounts: {},
+      regionCounts: {},
+      gridCellCounts: {}
+    };
+    let boundsIndex = {};
     
     for (const [zoom, cells] of Object.entries(this.gridData)) {
       const zoomDir = `static/api/grid/z${zoom}`;
       await fs.mkdir(zoomDir, { recursive: true });
+      
+      stats.gridCellCounts[`z${zoom}`] = Object.keys(cells).length;
+      boundsIndex[`z${zoom}`] = {};
       
       for (const [cellId, cellData] of Object.entries(cells)) {
         const filename = `${cellId}.json`;
         const filepath = path.join(zoomDir, filename);
         
         const output = {
-          zoom: parseInt(zoom),
-          cell: cellId,
           bounds: cellData.bounds,
-          campsiteCount: cellData.campsites.length,
+          count: cellData.campsites.length,
+          countries: [...new Set(cellData.campsites.map(c => c.country))],
+          regions: [...new Set(cellData.campsites.map(c => c.subdivision))],
           campsites: cellData.campsites
         };
         
-        await fs.writeFile(filepath, JSON.stringify(output, null, 2));
+        // Update bounds index
+        boundsIndex[`z${zoom}`][cellId] = {
+          bounds: cellData.bounds,
+          count: cellData.campsites.length,
+          countries: output.countries
+        };
+        
+        await fs.writeFile(filepath, JSON.stringify(output));
         totalFiles++;
       }
       
       console.log(`📄 Generated ${Object.keys(cells).length} files for zoom level ${zoom}`);
     }
     
+    // Calculate country and region stats
+    this.campsites.forEach(campsite => {
+      stats.countryCounts[campsite.country] = (stats.countryCounts[campsite.country] || 0) + 1;
+      const regionKey = `${campsite.country}/${campsite.subdivision}`;
+      stats.regionCounts[regionKey] = (stats.regionCounts[regionKey] || 0) + 1;
+    });
+    
+    // Save metadata
+    const metadata = {
+      generated: new Date().toISOString(),
+      gridConfig: GRID_CONFIG,
+      stats: stats,
+      bounds: {
+        minLat: -90,
+        maxLat: 90,
+        minLng: -180,
+        maxLng: 180
+      }
+    };
+    
+    await fs.writeFile('static/api/grid/meta/stats.json', JSON.stringify(metadata, null, 2));
+    await fs.writeFile('static/api/grid/meta/bounds.json', JSON.stringify(boundsIndex));
+    
+    // Generate minimal campsite index for entry point
+    await this.generateMinimalIndex(stats);
+    
     console.log(`✅ Total grid files generated: ${totalFiles}`);
+    console.log(`📊 Generated metadata files: stats.json, bounds.json, campsites-minimal.json`);
+  }
+
+  async generateMinimalIndex(stats) {
+    console.log('📋 Generating minimal fallback index...');
+    
+    // Create a minimal index for overview map
+    const minimalIndex = {
+      meta: {
+        total: stats.totalCampsites,
+        countries: Object.keys(stats.countryCounts).length,
+        generated: new Date().toISOString()
+      },
+      summary: Object.entries(stats.countryCounts).map(([country, count]) => ({
+        country,
+        count,
+        // Calculate country centroid (simplified)
+        centroid: this.calculateCountryCentroid(country)
+      }))
+    };
+
+    await fs.writeFile('static/api/campsites-minimal.json', JSON.stringify(minimalIndex));
+  }
+
+  calculateCountryCentroid(country) {
+    const countryCampsites = this.campsites.filter(c => c.country === country);
+    if (countryCampsites.length === 0) return { lat: 0, lng: 0 };
+
+    const totalLat = countryCampsites.reduce((sum, c) => sum + c.latitude, 0);
+    const totalLng = countryCampsites.reduce((sum, c) => sum + c.longitude, 0);
+    
+    return {
+      lat: totalLat / countryCampsites.length,
+      lng: totalLng / countryCampsites.length
+    };
   }
 }
 

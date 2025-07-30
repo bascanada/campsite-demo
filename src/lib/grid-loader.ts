@@ -24,7 +24,7 @@ export class GridCampsiteLoader {
   getGridZoom(mapZoom: number): number {
     if (mapZoom <= 4) return 2;      // Country level
     if (mapZoom <= 7) return 4;      // Regional level  
-    if (mapZoom <= 10) return 6;     // Area level
+    if (mapZoom <= 9) return 6;      // Area level
     return 8;                        // Detailed view
   }
 
@@ -38,12 +38,16 @@ export class GridCampsiteLoader {
     const minY = Math.floor((bounds.getSouth() + 90) / gridSize);
     const maxY = Math.floor((bounds.getNorth() + 90) / gridSize);
 
+    console.log(`Grid calculation: bounds=${bounds.getSouth()},${bounds.getWest()} to ${bounds.getNorth()},${bounds.getEast()}`);
+    console.log(`Grid size: ${gridSize}, cells: x(${minX}-${maxX}), y(${minY}-${maxY})`);
+
     for (let x = minX; x <= maxX; x++) {
       for (let y = minY; y <= maxY; y++) {
         cells.push(`${x}-${y}`);
       }
     }
 
+    console.log(`Calculated ${cells.length} grid cells:`, cells.slice(0, 10)); // Show first 10 cells
     return cells;
   }
 
@@ -52,22 +56,28 @@ export class GridCampsiteLoader {
     const cacheKey = `z${gridZoom}-${cellKey}`;
     
     if (this.cache.has(cacheKey)) {
+      console.log(`Cache hit: ${cacheKey}`);
       return this.cache.get(cacheKey);
     }
 
     try {
-      const response = await fetch(`/api/grid/z${gridZoom}/${cellKey}.json`);
+      const url = `/api/grid/z${gridZoom}/${cellKey}.json`;
+      console.log(`Fetching: ${url}`);
+      const response = await fetch(url);
       if (!response.ok) {
         // Cell doesn't exist (no campsites in this area) - this is normal
+        console.log(`Grid cell not found: ${url} (${response.status})`);
         this.cache.set(cacheKey, null); // Cache the "empty" result
         return null;
       }
 
       const cellData = await response.json();
+      console.log(`Successfully loaded grid cell ${cellKey}: ${cellData.campsites?.length || 0} campsites`);
       this.cache.set(cacheKey, cellData);
       return cellData;
     } catch (error) {
       // Silently handle missing grid cells - they're expected when areas have no campsites
+      console.log(`Error loading grid cell ${cellKey}:`, error);
       this.cache.set(cacheKey, null);
       return null;
     }
@@ -84,6 +94,7 @@ export class GridCampsiteLoader {
     const gridZoom = this.getGridZoom(mapZoom);
 
     console.log(`Grid loader: map zoom ${mapZoom} -> grid zoom ${gridZoom}`);
+    console.log('Map bounds:', mapBounds);
 
     // Check if we need to reload data
     const boundsChanged = !this.currentBounds || !this.currentBounds.equals(mapBounds);
@@ -103,6 +114,7 @@ export class GridCampsiteLoader {
     );
 
     console.log(`Loading ${newCells.length} new grid cells out of ${visibleCells.length} visible cells for zoom ${gridZoom}`);
+    console.log('New cells to load:', newCells);
 
     // Load new cells in parallel, but limit concurrency
     const batchSize = 10;
@@ -125,7 +137,9 @@ export class GridCampsiteLoader {
 
     // Count successful loads
     const successfulLoads = loadedCells.filter(result => result.data !== null).length;
+    const failedLoads = loadedCells.filter(result => result.data === null);
     console.log(`Successfully loaded ${successfulLoads} grid cells with data`);
+    console.log(`Failed to load ${failedLoads.length} grid cells:`, failedLoads.map(r => r.cellKey));
 
     return this.getCachedCampsites(gridZoom, mapBounds);
   }

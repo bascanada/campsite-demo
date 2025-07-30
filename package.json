@@ -15,10 +15,7 @@
 		"lint": "prettier --check . && eslint .",
 		"test:unit": "vitest",
 		"test": "npm run test:unit -- --run",
-		"generate-data": "node scripts/generate-dummy-data.js",
-		"generate-grid-index": "node scripts/generate-grid-index.js",
-		"generate-grid-smart": "node scripts/smart-grid-generator.js",
-		"copy-content": "node -e \"require('fs').cpSync('content', '.svelte-kit/output/server/content', { recursive: true, force: true });\""
+		"generate-data": "node scripts/generate-dummy-data.js"
 	},
 	"devDependencies": {
 		"@eslint/compat": "^1.2.5",

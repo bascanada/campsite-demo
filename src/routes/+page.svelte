@@ -9,6 +9,9 @@
 	let gridLoader: GridCampsiteLoader;
 	let currentMarkers: any[] = [];
 	let loadingIndicator = false;
+	let lastProcessedBounds: any = null;
+	let lastProcessedZoom: number = 0;
+	let cachedClusters: any = null;
 	let statsDisplay = { 
 		campsites: 0, 
 		gridZoom: 0, 
@@ -40,6 +43,26 @@
 	async function loadCampsitesForCurrentView() {
 		if (!map || loadingIndicator) return;
 		
+		const mapZoom = map.getZoom();
+		const mapBounds = map.getBounds();
+		
+		// Check if we can use cached results (same zoom level and not moved significantly)
+		const zoomChanged = Math.floor(mapZoom) !== Math.floor(lastProcessedZoom);
+		const boundsChanged = !lastProcessedBounds || 
+			Math.abs(mapBounds.getCenter().lat - lastProcessedBounds.getCenter().lat) > 0.01 ||
+			Math.abs(mapBounds.getCenter().lng - lastProcessedBounds.getCenter().lng) > 0.01 ||
+			Math.abs(mapBounds.getNorth() - lastProcessedBounds.getNorth()) > 0.05;
+		
+		if (!zoomChanged && !boundsChanged && cachedClusters) {
+			console.log('Using cached cluster data (minor pan/zoom)');
+			return;
+		}
+		
+		// Clear cache if zoom level changed significantly
+		if (zoomChanged) {
+			cachedClusters = null;
+		}
+		
 		loadingIndicator = true;
 		const startTime = performance.now();
 		
@@ -49,7 +72,6 @@
 				await gridLoader.init();
 			}
 
-			const mapZoom = map.getZoom();
 			console.log(`Loading data for zoom level: ${mapZoom}`);
 			
 			// Clear existing markers
@@ -58,8 +80,8 @@
 			// Progressive zoom levels:
 			// 0-4: Country view (1 marker for Canada)
 			// 5-7: Regional clusters (provinces/large regions)
-			// 8-10: City/area level clusters  
-			// 11+: Individual campsites
+			// 8-9: City/area level clusters  
+			// 10+: Individual campsites
 			
 			if (mapZoom <= 4) {
 				console.log('Loading country summary...');
@@ -67,13 +89,17 @@
 			} else if (mapZoom <= 7) {
 				console.log('Loading regional clusters...');
 				await loadRegionalClusters();
-			} else if (mapZoom <= 10) {
+			} else if (mapZoom <= 9) {
 				console.log('Loading area clusters...');
 				await loadAreaClusters();
 			} else {
 				console.log('Loading individual campsites...');
 				await loadCampsiteMarkers();
 			}
+			
+			// Cache the current state
+			lastProcessedBounds = mapBounds;
+			lastProcessedZoom = mapZoom;
 			
 			const loadTime = performance.now() - startTime;
 			statsDisplay.loadTime = Math.round(loadTime);
@@ -121,6 +147,14 @@
 	async function loadRegionalClusters() {
 		console.log('Loading regional clusters...');
 		
+		// Check if we can use cached clusters
+		if (cachedClusters && cachedClusters.type === 'regional' && 
+			cachedClusters.zoom === Math.floor(map.getZoom())) {
+			console.log('Using cached regional clusters');
+			displayClusters(cachedClusters.clusters, 'regional');
+			return;
+		}
+		
 		// For zoom 5-7, show provincial/regional clusters
 		// Use the z4 grid level which has larger cells (~1250km)
 		const result = await gridLoader.loadCampsitesForView(map);
@@ -134,39 +168,28 @@
 		// Create clusters by grouping campsites in large geographic areas
 		const clusters = createGeographicClusters(campsites, 2.0); // 2 degree clusters
 		
-		clusters.forEach(cluster => {
-			const radius = Math.min(Math.max(Math.log(cluster.count) * 4, 8), 30);
-			const marker = (window as any).L.circleMarker([cluster.centerLat, cluster.centerLng], {
-				radius: radius,
-				fillColor: '#ff7f00',
-				color: '#ff5500',
-				weight: 2,
-				opacity: 0.8,
-				fillOpacity: 0.6
-			}).addTo(map);
-
-			marker.bindPopup(`
-				<b>${cluster.count} campsites</b><br>
-				<em>Zoom in to see more details</em>
-			`);
-			
-			currentMarkers.push(marker);
-		});
-
-		statsDisplay = {
-			...statsDisplay,
-			campsites: clusters.length,
-			gridZoom: 4,
-			cellsLoaded: clusters.length
+		// Cache the results
+		cachedClusters = {
+			type: 'regional',
+			zoom: Math.floor(map.getZoom()),
+			clusters: clusters
 		};
 		
-		console.log(`Regional clusters loaded: ${clusters.length} clusters`);
+		displayClusters(clusters, 'regional');
 	}
 
 	async function loadAreaClusters() {
 		console.log('Loading area clusters...');
 		
-		// For zoom 8-10, show smaller area clusters
+		// Check if we can use cached clusters
+		if (cachedClusters && cachedClusters.type === 'area' && 
+			cachedClusters.zoom === Math.floor(map.getZoom())) {
+			console.log('Using cached area clusters');
+			displayClusters(cachedClusters.clusters, 'area');
+			return;
+		}
+		
+		// For zoom 8-9, show smaller area clusters
 		// Use the z6 grid level which has medium cells (~312km)
 		const result = await gridLoader.loadCampsitesForView(map);
 		if (!result) {
@@ -183,8 +206,26 @@
 		const maxClusters = 100;
 		const clustersToShow = clusters.slice(0, maxClusters);
 		
-		clustersToShow.forEach(cluster => {
-			if (cluster.count === 1) {
+		// Cache the results
+		cachedClusters = {
+			type: 'area',
+			zoom: Math.floor(map.getZoom()),
+			clusters: clustersToShow
+		};
+		
+		displayClusters(clustersToShow, 'area');
+	}
+
+	function displayClusters(clusters: any[], type: string) {
+		const colors = {
+			regional: { fill: '#ff7f00', stroke: '#ff5500' },
+			area: { fill: '#28a745', stroke: '#1e7e34' }
+		};
+		
+		const color = colors[type] || colors.area;
+		
+		clusters.forEach(cluster => {
+			if (cluster.count === 1 && type === 'area') {
 				// Single campsite - show as regular marker
 				const campsite = cluster.campsites[0];
 				const marker = (window as any).L.marker([campsite.latitude, campsite.longitude]).addTo(map);
@@ -195,11 +236,11 @@
 				currentMarkers.push(marker);
 			} else {
 				// Multiple campsites - show as cluster
-				const radius = Math.min(Math.max(Math.log(cluster.count) * 3, 6), 20);
+				const radius = Math.min(Math.max(Math.log(cluster.count) * (type === 'regional' ? 4 : 3), type === 'regional' ? 8 : 6), type === 'regional' ? 30 : 20);
 				const marker = (window as any).L.circleMarker([cluster.centerLat, cluster.centerLng], {
 					radius: radius,
-					fillColor: '#28a745',
-					color: '#1e7e34',
+					fillColor: color.fill,
+					color: color.stroke,
 					weight: 2,
 					opacity: 0.8,
 					fillOpacity: 0.6
@@ -207,7 +248,7 @@
 
 				marker.bindPopup(`
 					<b>${cluster.count} campsites</b><br>
-					<em>Zoom in to see individual sites</em>
+					<em>Zoom in to see ${type === 'regional' ? 'more details' : 'individual sites'}</em>
 				`);
 				
 				currentMarkers.push(marker);
@@ -216,20 +257,30 @@
 
 		statsDisplay = {
 			...statsDisplay,
-			campsites: clustersToShow.length,
-			gridZoom: 6,
-			cellsLoaded: clustersToShow.length
+			campsites: clusters.length,
+			gridZoom: type === 'regional' ? 4 : 6,
+			cellsLoaded: clusters.length
 		};
 		
-		console.log(`Area clusters loaded: ${clustersToShow.length} clusters/markers`);
+		console.log(`${type} clusters loaded: ${clusters.length} clusters`);
 	}
 
-	// Helper function to create geographic clusters
+	// Helper function to create geographic clusters (deterministic)
 	function createGeographicClusters(campsites: any[], clusterSize: number): any[] {
+		if (!campsites || campsites.length === 0) return [];
+		
+		// Sort campsites by latitude, then longitude for deterministic clustering
+		const sortedCampsites = [...campsites].sort((a, b) => {
+			if (Math.abs(a.latitude - b.latitude) > 0.0001) {
+				return a.latitude - b.latitude;
+			}
+			return a.longitude - b.longitude;
+		});
+		
 		const clusters: any[] = [];
 		const clustered = new Set();
 
-		campsites.forEach((campsite, index) => {
+		sortedCampsites.forEach((campsite, index) => {
 			if (clustered.has(index)) return;
 
 			const cluster = {
@@ -240,7 +291,7 @@
 			};
 
 			// Find nearby campsites to cluster
-			campsites.forEach((other, otherIndex) => {
+			sortedCampsites.forEach((other, otherIndex) => {
 				if (index !== otherIndex && !clustered.has(otherIndex)) {
 					const distance = Math.sqrt(
 						Math.pow(campsite.latitude - other.latitude, 2) +
